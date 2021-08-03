@@ -18,16 +18,25 @@ public class ApartmentDAO {
 		}
 	}
 
+	public void aptSetPreparedStatement(PreparedStatement p, Apartment a) throws SQLException {
+		p.setString(1, a.getLocation());
+		p.setInt(2, a.getSqft());
+		p.setInt(3, a.getBeds());
+		p.setInt(4, a.getBaths());
+		p.setInt(5, a.getPrice());
+	}
+
+	public Apartment rsFetchApt(ResultSet rs) throws SQLException {
+
+		return new Apartment(rs.getString(2), rs.getInt(1), rs.getInt(3), rs.getInt(4), rs.getInt(5), rs.getInt(6));
+	}
+
 	// create apt
 	public Apartment createApartment(Apartment newApt) {
 		try (Connection conn = DriverManager.getConnection(url, user, pass)) {
 			String sql = "INSERT INTO apartments(location,sqft,beds,baths,price) VALUES(?,?,?,?,?)";
 			PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-			stmt.setString(1, newApt.getLocation());
-			stmt.setInt(2, newApt.getSqft());
-			stmt.setInt(3, newApt.getBeds());
-			stmt.setInt(4, newApt.getBaths());
-			stmt.setInt(5, newApt.getPrice());
+			aptSetPreparedStatement(stmt, newApt);
 			stmt.executeUpdate();
 			ResultSet keys = stmt.getGeneratedKeys();
 			keys.next();
@@ -45,14 +54,11 @@ public class ApartmentDAO {
 		try (Connection conn = DriverManager.getConnection(url, user, pass)) {
 			String sql = "UPDATE apartments SET location = ?, sqft = ?, beds = ?, baths = ?, price = ? WHERE apartment_id = ?";
 			PreparedStatement stmt = conn.prepareStatement(sql);
-			stmt.setString(1, apt.getLocation());
-			stmt.setInt(2, apt.getSqft());
-			stmt.setInt(3, apt.getBeds());
-			stmt.setInt(4, apt.getBaths());
-			stmt.setInt(5, apt.getPrice());
+			aptSetPreparedStatement(stmt, apt);
 			stmt.setInt(6, apt.getId());
 			stmt.executeUpdate();
-			return new Apartment(apt.getLocation(),apt.getId(), apt.getSqft(), apt.getBeds(),apt.getBaths(),apt.getPrice());
+			apt.setId(id);
+			return apt;
 		} catch (Exception e) {
 			e.getStackTrace();
 		}
@@ -61,8 +67,8 @@ public class ApartmentDAO {
 
 	// delete apartment by id
 	public boolean deleteAptByID(int id) {
-		
-		try(Connection conn = DriverManager.getConnection(url, user, pass)) {
+
+		try (Connection conn = DriverManager.getConnection(url, user, pass)) {
 			String sql = "DELETE FROM apartments WHERE apartment_id = ?";
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, id);
@@ -76,17 +82,13 @@ public class ApartmentDAO {
 	// retrieve apartments by id
 	public Apartment retrieveAptByID(int id) {
 		try (Connection conn = DriverManager.getConnection(url, user, pass)) {
-			String sql = "SELECT apartment_id, location, sqft, beds, baths, price FROM apartments WHERE apartment_id = ?";
+			String sql = "SELECT apartment_id, location, sqft, beds, baths, price "
+					+ "FROM apartments WHERE apartment_id = ?";
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, id);
 			ResultSet aptRS = stmt.executeQuery();
 			aptRS.next();
-			String loc = aptRS.getString(2);
-			int sqft = aptRS.getInt(3);
-			int beds = aptRS.getInt(4);
-			int baths = aptRS.getInt(5);
-			int price = aptRS.getInt(6);
-			return new Apartment(loc, id, sqft, beds, baths, price);
+			return rsFetchApt(aptRS);
 
 		} catch (Exception e) {
 			e.getStackTrace();
@@ -96,28 +98,22 @@ public class ApartmentDAO {
 	}
 
 	// retrieve all
-	public ArrayList<Apartment> retrieveAllApt()  {
+	public ArrayList<Apartment> retrieveAllApt() {
 
 		try (Connection conn = DriverManager.getConnection(url, user, pass)) {
 			String sql = "SELECT apartment_id, location, sqft, beds, baths, price FROM apartments";
 			PreparedStatement stmt = conn.prepareStatement(sql);
-			ResultSet aptRS = stmt.executeQuery();
+			ResultSet aptRS = stmt.executeQuery(); // ResultSet object
 			ArrayList<Apartment> aptsReturn = new ArrayList<>();
 			while (aptRS.next()) {
-				int id = aptRS.getInt(1);
-				String loc = aptRS.getString(2);
-				int sqft = aptRS.getInt(3);
-				int beds = aptRS.getInt(4);
-				int baths = aptRS.getInt(5);
-				int price = aptRS.getInt(6);
-				aptsReturn.add(new Apartment(loc, id, sqft, beds, baths, price));
-				
+				aptsReturn.add(rsFetchApt(aptRS));
 			}
+
 			return aptsReturn;
 		} catch (Exception e) {
 			e.getStackTrace();
 			return new ArrayList<Apartment>();
 		}
 	}
-	
+
 }

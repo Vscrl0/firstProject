@@ -7,34 +7,117 @@
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-
-    <title>Hello, world!</title>
+    <link rel="stylesheet" href="style.css">
+    <title>Apartment Renter</title>
   </head>
-  <body>
-    <button class = "btn btn-primary", id = "myButton">
-      Test
-    </button>
-    <div id = 'body'>
-      
+  <body style = 'background-color:rgb(188, 187, 223);'>
+      <div class="container mt-5" style = 'padding:1%;border:solid; background-color: rgb(219, 225, 250);'>
+        <div class="col-auto">
+          <h1 style="text-align:center;">Apartments for Rent</h1>
+        </div>
+        <hr>
+        <div style= "height:400px; overflow:auto;">
+            <table class = "table table-hover" style = "text-align:center; vertical-align:middle">
+              <thead>
+                <tr>
+                  <th scope="col">Location</th>
+                  <th scope="col">Beds</th>
+                  <th scope="col">Baths</th>
+                  <th scope="col">Sqft</th>
+                  <th scope="col">Price</th>
+                  <th scope="col"></th>
+                  <th scope="col"></th>
+                </tr>
+              </thead>
+        
+              <tbody id = "tablebody">
+                
+              </tbody>
+            </table>
+            
+        </div>
+        <hr>
+        <h2 style="text-align:center;">Add an apartment</h1>
+          <div class="d-flex justify-content-center">
+            
+            <input type="text"placeholder="Location" id = 'iloc' size="30" style="width:300px; margin:0.3%;"> </input>
+            <input type="number" min = "1" placeholder="Beds" id = 'ibeds' style="width:70px; margin:0.3%;">  </input>
+            <input type="number" min = "1" placeholder="Bath" id = 'ibaths' style="width:70px; margin:0.3%;" > </input>
+            <input type="number" min = "1" placeholder="Sqft" id = 'isqft' style="width:70px; margin:0.3%;" > </input>
+            <input type="number" min = "1" placeholder="Price" id = 'iprice' style="width:90px; margin:0.3%;"> </input>
+            <button id = 'addButton' class = "btn btn-success border border-dark" style="width:80; margin:0.3%;" >Add</button>
+          
+          </div>
+
+      </div>
     </div>
+    
     <script>
-      document.getElementById("myButton").addEventListener('click', function () {
-        console.log('button press')
-        xhr = new XMLHttpRequest;
-        xhr.open('GET', "http://localhost:8080/apartment-api/apartments");
-        xhr.send();
-        xhr.onload = function () {
-          if (xhr.status === 200) {
-            document.getElementById('body').innerText = JSON.parse(xhr.responseText)[Math.floor(1000*Math.random())].location;
+      //populate table
+      var xhr = new XMLHttpRequest;
+      xhr.open('GET' , "http://localhost:8080/apartment-api/apartments");
+      xhr.send();
+      function editButtonClick(sid) {
+
+      }
+      function deleteButtonClick(sid) {
+
+        var xhr = new XMLHttpRequest;
+        var delApt = {"id":sid}
+        xhr.open('DELETE', "http://localhost:8080/apartment-api/apartments");
+        xhr.send(JSON.stringify(sid));
+        document.getElementById('body' + sid).innerHTML = ''
+      }
+
+      function addToTable(newApt) {
+        document.getElementById("tablebody").innerHTML += `<tr id = "body${newApt.id}"> </tr>`;
+        document.getElementById(`body${newApt.id}`).innerHTML += `<td id = \"1${newApt.id}\">${newApt.location}</td>`;
+        document.getElementById(`body${newApt.id}`).innerHTML += `<td id = \"2${newApt.id}\">${newApt.beds}</td>`;
+        document.getElementById(`body${newApt.id}`).innerHTML += `<td id = \"3${newApt.id}\">${newApt.baths}</td>`;
+        document.getElementById(`body${newApt.id}`).innerHTML += `<td id = \"4${newApt.id}\">${newApt.sqft}</td>`;
+        document.getElementById(`body${newApt.id}`).innerHTML += `<td id = \"5${newApt.id}\">$${newApt.price}</td>`;
+
+        document.getElementById(`body${newApt.id}`).innerHTML += `<td style = "width:2%;"><button class = "btn btn-primary border border-dark" id = "btnE${newApt.id}"> Edit </button></td>`
+        document.getElementById(`body${newApt.id}`).innerHTML += `<td style = "width:2%;"><button class = "btn btn-danger border border-dark" id = "btnD${newApt.id}" onclick ="deleteButtonClick(${newApt.id})"> Delete </button></td>`
+      }
+
+
+      xhr.onreadystatechange = function() {
+
+                  console.log(xhr.readyState);
+                  if (xhr.readyState === 4) {
+                    for (let apt of JSON.parse(xhr.responseText)) {
+                      addToTable(apt);
+                  }
+                  }
+
+      }
+
+
+      document.getElementById('addButton').addEventListener('click', function() {
+        let loc = document.getElementById('iloc').value;
+        let beds = document.getElementById('ibeds').value;
+        let baths = document.getElementById('ibaths').value;
+        let sqft = document.getElementById('isqft').value;
+        let price = document.getElementById('iprice').value;
+        let myApt = {"location":loc, "beds":beds, "baths":baths, "sqft":sqft, "price":price};
+        if (loc != '' && beds != 0 && baths != 0 && price != 0) {
+          var xhr2 = new XMLHttpRequest;
+          xhr2.open('POST', "http://localhost:8080/apartment-api/apartments");
+          xhr2.send(JSON.stringify(myApt));
+          xhr2.onload = function() {
+              let responseApt = JSON.parse(xhr2.responseText);
+              addToTable(responseApt);
           }
-          console.log('onload');
         }
-
       })
-    </script>
 
+    </script>
+    
     <!---------Bootstrap Bundle with Popper----------->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
+    
+    </script>
 
   </body>
 </html>

@@ -80,6 +80,11 @@ public class Apartment {
 		this.baths = baths;
 		this.price = price;
 	}
+	//constructor for immediate deletion
+	public Apartment(int id) {
+		super();
+		this.id = id;
+	}
 
 	@Override
 	public String toString() {

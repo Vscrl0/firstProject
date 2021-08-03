@@ -16,20 +16,20 @@
           <h1 style="text-align:center;">Apartments for Rent</h1>
         </div>
         <hr>
+
         <div style= "height:400px; overflow:auto;">
-            <table class = "table table-hover" style = "text-align:center; vertical-align:middle">
-              <thead>
-                <tr>
-                  <th scope="col">Location</th>
-                  <th scope="col">Beds</th>
-                  <th scope="col">Baths</th>
-                  <th scope="col">Sqft</th>
-                  <th scope="col">Price</th>
-                  <th scope="col"></th>
-                  <th scope="col"></th>
-                </tr>
-              </thead>
-        
+            <table class = "table table-hover" style = "text-align:center; vertical-align:middle;font-size:120%">
+                <thead>
+                  <tr>
+                    <th scope="col">Location</th>
+                    <th scope="col">Beds</th>
+                    <th scope="col">Baths</th>
+                    <th scope="col">Sqft</th>
+                    <th scope="col">Price</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
               <tbody id = "tablebody">
                 
               </tbody>
@@ -37,14 +37,14 @@
             
         </div>
         <hr>
-        <h2 style="text-align:center;">Add an apartment</h1>
+        <h2 style="text-align:center;">Add an apartment</h2>
           <div class="d-flex justify-content-center">
             
-            <input type="text"placeholder="Location" id = 'iloc' size="30" style="width:300px; margin:0.3%;"> </input>
-            <input type="number" min = "1" placeholder="Beds" id = 'ibeds' style="width:70px; margin:0.3%;">  </input>
-            <input type="number" min = "1" placeholder="Bath" id = 'ibaths' style="width:70px; margin:0.3%;" > </input>
-            <input type="number" min = "1" placeholder="Sqft" id = 'isqft' style="width:70px; margin:0.3%;" > </input>
-            <input type="number" min = "1" placeholder="Price" id = 'iprice' style="width:90px; margin:0.3%;"> </input>
+            <input type="text"placeholder="Location" id = 'iloc' size="30" style="width:300px; margin:0.3%;" class="border border-dark"> </input>
+            <input type="number" min = "1" placeholder="Beds" id = 'ibeds' style="width:70px; margin:0.3%;" class="border border-dark">  </input>
+            <input type="number" min = "1" placeholder="Bath" id = 'ibaths' style="width:70px; margin:0.3%;"  class="border border-dark"> </input>
+            <input type="number" min = "1" placeholder="Sqft" id = 'isqft' style="width:70px; margin:0.3%;"  class="border border-dark"> </input>
+            <input type="number" min = "1" placeholder="Price" id = 'iprice' style="width:90px; margin:0.3%;" class="border border-dark"> </input>
             <button id = 'addButton' class = "btn btn-success border border-dark" style="width:80; margin:0.3%;" >Add</button>
           
           </div>
@@ -53,10 +53,6 @@
     </div>
     
     <script>
-      //populate table
-      var xhr = new XMLHttpRequest;
-      xhr.open('GET' , "http://localhost:8080/apartment-api/apartments");
-      xhr.send();
       function editButtonClick(sid) {
 
       }
@@ -80,17 +76,16 @@
         document.getElementById(`body${newApt.id}`).innerHTML += `<td style = "width:2%;"><button class = "btn btn-primary border border-dark" id = "btnE${newApt.id}"> Edit </button></td>`
         document.getElementById(`body${newApt.id}`).innerHTML += `<td style = "width:2%;"><button class = "btn btn-danger border border-dark" id = "btnD${newApt.id}" onclick ="deleteButtonClick(${newApt.id})"> Delete </button></td>`
       }
-
-
+      //populate table
+      var xhr = new XMLHttpRequest;
+      xhr.open('GET' , "http://localhost:8080/apartment-api/apartments");
+      xhr.send();
       xhr.onreadystatechange = function() {
-
-                  console.log(xhr.readyState);
-                  if (xhr.readyState === 4) {
-                    for (let apt of JSON.parse(xhr.responseText)) {
-                      addToTable(apt);
-                  }
-                  }
-
+        if (xhr.readyState === 4) {
+            for (let apt of JSON.parse(xhr.responseText)) {
+              addToTable(apt);
+          }
+        }
       }
 
 

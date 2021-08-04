@@ -1,236 +1,270 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <link rel="stylesheet" href="style.css">
-    <title>Apartment Renter</title>
-  </head>
-  
-  <!-- Body start -->
-  <body style = 'background-color:rgb(188, 187, 223);'>
-      <div class="container mt-5" style = 'padding:1%;border:solid; background-color: rgb(219, 225, 250);'>
-        <div class="col-auto">
-          <h1 style="text-align:center;">Apartments for Rent</h1>
-        </div>
-        <hr>
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <!-- Table start -->
-        <div style= "height:400px; overflow:auto;">
-            <table class = "table table-hover" id = "mainTable" style = "text-align:center; vertical-align:middle;font-size:120%">
-                <thead>
-                  <tr>
-                    <th scope="col">Location</th>
-                    <th scope="col">Beds</th>
-                    <th scope="col">Baths</th>
-                    <th scope="col">Sqft</th>
-                    <th scope="col">Price</th>
-                    <th scope="col"></th>
-                    <th scope="col"></th>
-                  </tr>
-                </thead>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <link rel="stylesheet" href="style.css">
+  <title>Apartment Renter</title>
+</head>
 
-              <tbody id = "tablebody">
-                
-              </tbody>
+<!-- Body start -->
+<body style='background-color:rgb(188, 187, 223);'>
 
-            </table>
-            
-        </div>
-        <hr>
-        <!-- End of table -->
+  <div class="container mt-5" style='padding:1%;border:solid; background-color: rgb(219, 225, 250);'>
+    <div class="col-auto">
+      <h1 style="text-align:center;">Apartments for Rent</h1>
+    </div>
+    <hr>
 
-        <h2 style="text-align:center;">Add an apartment</h2>
-          <div class="d-flex justify-content-center">
-            <!-- Add apartment forms -->
-            <input type="text"placeholder="Location" id = 'iloc' size="30" style="width:300px; margin:0.3%;" class="border border-dark"> </input>
-            <input type="number" min = "1" placeholder="Beds" id = 'ibeds' style="width:70px; margin:0.3%;" class="border border-dark">  </input>
-            <input type="number" min = "1" placeholder="Bath" id = 'ibaths' style="width:70px; margin:0.3%;"  class="border border-dark"> </input>
-            <input type="number" min = "1" placeholder="Sqft" id = 'isqft' style="width:70px; margin:0.3%;"  class="border border-dark"> </input>
-            <input type="number" min = "1" placeholder="Price" id = 'iprice' style="width:90px; margin:0.3%;" class="border border-dark"> </input>
-            <button id = 'addButton' class = "btn btn-success border border-dark" style="width:80; margin:0.3%;" onclick = "addButtonClick()">Add</button>
-          
-          </div>
+    <!-- Table start -->
+    <div style="height:400px; overflow:auto;">
+      <table class="table table-hover" id="mainTable" style="text-align:center; vertical-align:middle;font-size:120%">
+        <thead>
+          <tr>
+            <th scope="col">Location</th>
+            <th scope="col">Beds</th>
+            <th scope="col">Baths</th>
+            <th scope="col">Sqft</th>
+            <th scope="col">Price</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
 
-      </div>
+        <tbody id="tablebody">
+          <!-- Table body populated with function -->
+        </tbody>
+
+      </table>
+
+    </div>
+    <hr>
+    <!-- End of table -->
+
+    <h2 style="text-align:center;">Add an apartment</h2>
+
+    <div class="d-flex justify-content-center">
+      <!-- Add apartment forms -->
+      <input type="text" placeholder="Location" id='iloc' size="30" style="width:300px; margin:0.3%;"
+        class="border border-dark"> </input>
+
+      <input type="number" min="1" placeholder="Beds" id='ibeds' style="width:70px; margin:0.3%;"
+        class="border border-dark"> </input>
+
+      <input type="number" min="1" placeholder="Bath" id='ibaths' style="width:70px; margin:0.3%;"
+        class="border border-dark"> </input>
+
+      <input type="number" min="1" placeholder="Sqft" id='isqft' style="width:70px; margin:0.3%;"
+        class="border border-dark"> </input>
+
+      <input type="number" min="1" placeholder="Price" id='iprice' style="width:90px; margin:0.3%;"
+        class="border border-dark"> </input>
+
+      <button id='addButton' class="btn btn-success border border-dark" style="width:80; margin:0.3%;"
+        onclick="addButtonClick()">Add</button>
+
     </div>
 
+  </div>
+  </div>
 
 
-    
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Update apartment</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <div class="col-md-6">Location:<input type="text"placeholder="Location" id = 'uloc' size="30" style="width:300px; margin:0.3%;" class="border border-dark"> </input></div>
-            <div class="col-md-2">Beds:<input type="number" min = "1" placeholder="Beds" id = 'ubeds' style="width:70px; margin:0.3%;" class="border border-dark">  </input></div>
-            <div class="col-md-2">Baths:<input type="number" min = "1" placeholder="Bath" id = 'ubaths' style="width:70px; margin:0.3%;"  class="border border-dark"> </input></div>
-            <div class="col-md-2">Sqft:<input type="number" min = "1" placeholder="Sqft" id = 'usqft' style="width:70px; margin:0.3%;"  class="border border-dark"> </input></div>
-            <div class="col-md-2">Price:<input type="number" min = "1" placeholder="Price" id = 'uprice' style="width:90px; margin:0.3%;" class="border border-dark"> </input></div>
-            </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary border border-dark" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary border border-dark" onclick = "saveButtonClick()">Save changes</button>
-          </div>
+
+
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Update apartment</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="col-md-6">Location:<input type="text" placeholder="Location" id='uloc' size="30"
+              style="width:300px; margin:0.3%;" class="border border-dark"> </input></div>
+          <div class="col-md-2">Beds:<input type="number" min="1" placeholder="Beds" id='ubeds'
+              style="width:70px; margin:0.3%;" class="border border-dark"> </input></div>
+          <div class="col-md-2">Baths:<input type="number" min="1" placeholder="Bath" id='ubaths'
+              style="width:70px; margin:0.3%;" class="border border-dark"> </input></div>
+          <div class="col-md-2">Sqft:<input type="number" min="1" placeholder="Sqft" id='usqft'
+              style="width:70px; margin:0.3%;" class="border border-dark"> </input></div>
+          <div class="col-md-2">Price:<input type="number" min="1" placeholder="Price" id='uprice'
+              style="width:90px; margin:0.3%;" class="border border-dark"> </input></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary border border-dark" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary border border-dark" onclick="saveButtonClick()">Save
+            changes</button>
         </div>
       </div>
     </div>
+  </div>
 
 
-    <!---------Bootstrap Bundle with Popper----------->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
-    
+  <!---------Bootstrap Bundle with Popper----------->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
+
 
 
 
     </script>
-    <!-- JS -->
-    <script>
-      onPageLoad(); //populates the table
-      //to send over to the save button
-      var toBeUpdated;
-      //modal
-      var newAptModal = new bootstrap.Modal(document.getElementById('exampleModal'), {keyboard: false});
+  <!-- JS -->
+  <script>
+    //populates the table
+    window.onload = function() {
+      onPageLoad(); 
+    }
+    
+    //data for the save button
+    var toBeUpdated;
+    //modal
+    var newAptModal = new bootstrap.Modal(document.getElementById('exampleModal'), { keyboard: false });
 
-      //update forms
-      var updateLocForm = document.getElementById('uloc');
-      var updateBedsForm = document.getElementById('ubeds')
-      var updateBathsForm = document.getElementById('ubaths');
-      var updateSqftForm = document.getElementById('usqft');
-      var updatePriceForm = document.getElementById('uprice');
+    //update forms
+    var updateLocForm = document.getElementById('uloc');
+    var updateBedsForm = document.getElementById('ubeds')
+    var updateBathsForm = document.getElementById('ubaths');
+    var updateSqftForm = document.getElementById('usqft');
+    var updatePriceForm = document.getElementById('uprice');
 
-      //add forms
-      var addLocForm = document.getElementById('iloc');
-      var addBedsForm = document.getElementById('ibeds');
-      var addBathsForm = document.getElementById('ibaths');
-      var addSqftForm = document.getElementById('isqft');
-      var addPriceForm = document.getElementById('iprice');
+    //add forms
+    var addLocForm = document.getElementById('iloc');
+    var addBedsForm = document.getElementById('ibeds');
+    var addBathsForm = document.getElementById('ibaths');
+    var addSqftForm = document.getElementById('isqft');
+    var addPriceForm = document.getElementById('iprice');
 
-      //
+    //
 
-      function editButtonClick(sid) {
+    function editButtonClick(sid) {
 
-        newAptModal.show(); //Show modal
-		    updateLocForm.value = document.getElementById(`lo${sid}`).innerText;
-        updateBedsForm.value = document.getElementById(`be${sid}`).innerText;
-        updateBathsForm.value = document.getElementById(`ba${sid}`).innerText;
-        updateSqftForm.value = document.getElementById(`sq${sid}`).innerText;
-        updatePriceForm.value = document.getElementById(`pr${sid}`).innerText.replace('$','');
-        toBeUpdated = sid;
+      newAptModal.show(); //Show modal
+      updateLocForm.value = document.getElementById(`lo${sid}`).innerText;
+      updateBedsForm.value = document.getElementById(`be${sid}`).innerText;
+      updateBathsForm.value = document.getElementById(`ba${sid}`).innerText;
+      updateSqftForm.value = document.getElementById(`sq${sid}`).innerText;
+      updatePriceForm.value = document.getElementById(`pr${sid}`).innerText.replace('$', '');
+      toBeUpdated = sid;
 
-      }
+    }
 
-      function saveButtonClick() {
+    function saveButtonClick() {
 
-        let loc = updateLocForm.value;
-        let beds = updateBedsForm.value;
-        let baths = updateBathsForm.value;
-        let sqft = updateSqftForm.value;
-        let price = updatePriceForm.value;
+      let loc = updateLocForm.value;
+      let beds = updateBedsForm.value;
+      let baths = updateBathsForm.value;
+      let sqft = updateSqftForm.value;
+      let price = updatePriceForm.value;
 
-          if (loc != '' && beds > 0 && baths > 0 && sqft > 0 && price > 0) { //check for valid entries
-            let xhr = new XMLHttpRequest;
-            xhr.open('PUT',"http://localhost:8080/apartment-api/apartments");
-            let newUApt = {"location":loc, "id":toBeUpdated, "beds":beds, "baths":baths, "sqft":sqft, "price":price};
-            xhr.send(JSON.stringify(newUApt));
-            document.getElementById(`lo${toBeUpdated}`).innerText = loc;
-            document.getElementById(`be${toBeUpdated}`).innerText = beds;
-            document.getElementById(`ba${toBeUpdated}`).innerText = baths;
-            document.getElementById(`sq${toBeUpdated}`).innerText = sqft;
-            document.getElementById(`pr${toBeUpdated}`).innerText = '$'+ price;
-          }
-
-        newAptModal.hide(); //hide modal after clicking save
-
-      }
-
-      //executed when a delete button is clicked
-      function deleteButtonClick(sid) {
-
+      if (loc != '' && beds > 0 && baths > 0 && sqft > 0 && price > 0) { //check for valid entries
         let xhr = new XMLHttpRequest;
-        var delApt = {"id":sid}
-        xhr.open('DELETE', "http://localhost:8080/apartment-api/apartments");
-        xhr.send(JSON.stringify(sid));
-        document.getElementById('body' + sid).innerHTML = ''
-
+        xhr.open('PUT', "http://localhost:8080/apartment-api/apartments");
+        let newUApt = { "location": loc, "id": toBeUpdated, "beds": beds, "baths": baths, "sqft": sqft, "price": price };
+        xhr.send(JSON.stringify(newUApt));
+        document.getElementById(`lo${toBeUpdated}`).innerText = loc;
+        document.getElementById(`be${toBeUpdated}`).innerText = beds;
+        document.getElementById(`ba${toBeUpdated}`).innerText = baths;
+        document.getElementById(`sq${toBeUpdated}`).innerText = sqft;
+        document.getElementById(`pr${toBeUpdated}`).innerText = '$' + price;
+        newAptModal.hide(); //hide modal after successful save
+      }
+      else { //invalid entry
+        window.alert('Invalid entry!');
       }
 
-      function addToTable(newApt) {
-        // table data
-        document.getElementById("tablebody").innerHTML += `<tr id = "body${newApt.id}"> </tr>`;
-        document.getElementById(`body${newApt.id}`).innerHTML += `<td id = "lo${newApt.id}">${newApt.location}</td>`;
-        document.getElementById(`body${newApt.id}`).innerHTML += `<td id = "be${newApt.id}">${newApt.beds}</td>`;
-        document.getElementById(`body${newApt.id}`).innerHTML += `<td id = "ba${newApt.id}">${newApt.baths}</td>`;
-        document.getElementById(`body${newApt.id}`).innerHTML += `<td id = "sq${newApt.id}">${newApt.sqft}</td>`;
-        document.getElementById(`body${newApt.id}`).innerHTML += `<td id = "pr${newApt.id}">$${newApt.price}</td>`;
-        // table buttons
-        document.getElementById(`body${newApt.id}`).innerHTML += `<td style = "width:2%;"><button class = "btn btn-primary border border-dark" id = "btnE${newApt.id}" onclick="editButtonClick(${newApt.id})"> Edit </button></td>`
-        document.getElementById(`body${newApt.id}`).innerHTML += `<td style = "width:2%;"><button class = "btn btn-danger border border-dark" id = "btnD${newApt.id}" onclick ="deleteButtonClick(${newApt.id})"> Delete </button></td>`
-      
+    }
+
+    //executed when a delete button is clicked
+    function deleteButtonClick(sid) {
+
+      let xhr = new XMLHttpRequest;
+      var delApt = { "id": sid }
+      xhr.open('DELETE', "http://localhost:8080/apartment-api/apartments");
+      xhr.send(JSON.stringify(sid));
+      document.getElementById('body' + sid).innerHTML = ''
+
+    }
+
+    function addToTable(newApt) {
+      // table data
+      document.getElementById("tablebody").innerHTML += `<tr id = "body${newApt.id}"> </tr>`;
+      document.getElementById(`body${newApt.id}`).innerHTML += `<td id = "lo${newApt.id}">${newApt.location}</td>`;
+      document.getElementById(`body${newApt.id}`).innerHTML += `<td id = "be${newApt.id}">${newApt.beds}</td>`;
+      document.getElementById(`body${newApt.id}`).innerHTML += `<td id = "ba${newApt.id}">${newApt.baths}</td>`;
+      document.getElementById(`body${newApt.id}`).innerHTML += `<td id = "sq${newApt.id}">${newApt.sqft}</td>`;
+      document.getElementById(`body${newApt.id}`).innerHTML += `<td id = "pr${newApt.id}">$${newApt.price}</td>`;
+      // table buttons
+      document.getElementById(`body${newApt.id}`).innerHTML += `<td style = "width:2%;"><button class = "btn btn-primary border border-dark" id = "btnE${newApt.id}" onclick="editButtonClick(${newApt.id})"> Edit </button></td>`
+      document.getElementById(`body${newApt.id}`).innerHTML += `<td style = "width:2%;"><button class = "btn btn-danger border border-dark" id = "btnD${newApt.id}" onclick ="deleteButtonClick(${newApt.id})"> Delete </button></td>`
+
+    }
+    //resets the add forms
+    function resetForms() {
+
+      addLocForm.value = '';
+      addBedsForm.value = '';
+      addBathsForm.value = '';
+      addSqftForm.value = '';
+      addPriceForm.value = '';
+
+    }
+    //executed when the add button is clicked
+    function addButtonClick() {
+
+      let loc = addLocForm.value;
+      let beds = addBedsForm.value;
+      let baths = addBathsForm.value;
+      let sqft = addSqftForm.value;
+      let price = addPriceForm.value;
+      let myApt = { "location": loc, "beds": beds, "baths": baths, "sqft": sqft, "price": price }; //to be sent in POST
+      if (loc != '' && beds > 0 && baths > 0 && price > 0) { //check for valid entry
+        let xhr = new XMLHttpRequest;
+        xhr.open('POST', "http://localhost:8080/apartment-api/apartments");
+        xhr.send(JSON.stringify(myApt));
+        xhr.onload = function () {
+          let responseApt = JSON.parse(xhr.responseText); //apartment sent back
+          addToTable(responseApt); //add to the table
+          resetForms();
+          // scroll to bottom of table after clicking
+          document.getElementById(`btnD${responseApt.id}`).focus();
+          document.getElementById("addButton").focus();
+
+
+        }
+
       }
-      //resets the add forms
-      function resetForms() {
-
-          addLocForm.value = '';
-          addBedsForm.value = '';
-          addBathsForm.value = '';
-          addSqftForm.value = '';
-          addPriceForm.value = '';
-
-      }
-      //executed when the add button is clicked
-      function addButtonClick() {
-        
-        let loc = addLocForm.value;
-        let beds = addBedsForm.value;
-        let baths = addBathsForm.value;
-        let sqft = addSqftForm.value;
-        let price = addPriceForm.value;
-        let myApt = {"location":loc, "beds":beds, "baths":baths, "sqft":sqft, "price":price}; //to be sent
-        if (loc != '' && beds > 0 && baths > 0 && price > 0) {
-          let xhr = new XMLHttpRequest;
-          xhr.open('POST', "http://localhost:8080/apartment-api/apartments");
-          xhr.send(JSON.stringify(myApt));
-          xhr.onload = function() {
-              let responseApt = JSON.parse(xhr.responseText); //apartment sent back
-              addToTable(responseApt); //add to the table
-              resetForms();
-              // scroll to bottom of table after clicking
-              document.getElementById(`btnD${responseApt.id}`).focus();
-              document.getElementById("addButton").focus();
-
-              
-          }
-          
+      else { //invalid entry
+        window.alert('Invalid entry!')
       }
     }
-      //populate table
-      function onPageLoad() {
-        let xhr = new XMLHttpRequest;
-        xhr.open('GET' , "http://localhost:8080/apartment-api/apartments"); //grabs all apartments in db
-        xhr.send();
-        xhr.onreadystatechange = function() {
-          if (xhr.readyState === 4) {
-            for (let apt of JSON.parse(xhr.responseText)) {
-              addToTable(apt);
-            }
+    //populate table
+    function onPageLoad() {
+
+      let xhr = new XMLHttpRequest;
+      xhr.open('GET', "http://localhost:8080/apartment-api/apartments"); //grabs all apartments in db
+      xhr.send();
+      xhr.onload = function () {
+
+        if (xhr.readyState === 4) {
+          for (let apt of JSON.parse(xhr.responseText)) {
+            addToTable(apt);
           }
         }
       }
 
+    }
 
-    </script>
+  </script>
 
 
 
-  </body>
+</body>
+
 </html>

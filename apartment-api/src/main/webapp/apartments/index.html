@@ -10,15 +10,16 @@
     <link rel="stylesheet" href="style.css">
     <title>Apartment Renter</title>
   </head>
+  <!-- Body start -->
   <body style = 'background-color:rgb(188, 187, 223);'>
       <div class="container mt-5" style = 'padding:1%;border:solid; background-color: rgb(219, 225, 250);'>
         <div class="col-auto">
           <h1 style="text-align:center;">Apartments for Rent</h1>
         </div>
         <hr>
-
+        <!-- Table start -->
         <div style= "height:400px; overflow:auto;">
-            <table class = "table table-hover" style = "text-align:center; vertical-align:middle;font-size:120%">
+            <table class = "table table-hover" id = "mainTable" style = "text-align:center; vertical-align:middle;font-size:120%">
                 <thead>
                   <tr>
                     <th scope="col">Location</th>
@@ -37,21 +38,22 @@
             
         </div>
         <hr>
+        <!-- End of table -->
         <h2 style="text-align:center;">Add an apartment</h2>
           <div class="d-flex justify-content-center">
-            
+            <!-- Add apartment forms -->
             <input type="text"placeholder="Location" id = 'iloc' size="30" style="width:300px; margin:0.3%;" class="border border-dark"> </input>
             <input type="number" min = "1" placeholder="Beds" id = 'ibeds' style="width:70px; margin:0.3%;" class="border border-dark">  </input>
             <input type="number" min = "1" placeholder="Bath" id = 'ibaths' style="width:70px; margin:0.3%;"  class="border border-dark"> </input>
             <input type="number" min = "1" placeholder="Sqft" id = 'isqft' style="width:70px; margin:0.3%;"  class="border border-dark"> </input>
             <input type="number" min = "1" placeholder="Price" id = 'iprice' style="width:90px; margin:0.3%;" class="border border-dark"> </input>
-            <button id = 'addButton' class = "btn btn-success border border-dark" style="width:80; margin:0.3%;" >Add</button>
+            <button id = 'addButton' class = "btn btn-success border border-dark" style="width:80; margin:0.3%;" onclick = "addButtonClick()" >Add</button>
           
           </div>
 
       </div>
     </div>
-    
+    <!-- JS -->
     <script>
       function editButtonClick(sid) {
 
@@ -76,20 +78,16 @@
         document.getElementById(`body${newApt.id}`).innerHTML += `<td style = "width:2%;"><button class = "btn btn-primary border border-dark" id = "btnE${newApt.id}"> Edit </button></td>`
         document.getElementById(`body${newApt.id}`).innerHTML += `<td style = "width:2%;"><button class = "btn btn-danger border border-dark" id = "btnD${newApt.id}" onclick ="deleteButtonClick(${newApt.id})"> Delete </button></td>`
       }
-      //populate table
-      var xhr = new XMLHttpRequest;
-      xhr.open('GET' , "http://localhost:8080/apartment-api/apartments");
-      xhr.send();
-      xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4) {
-            for (let apt of JSON.parse(xhr.responseText)) {
-              addToTable(apt);
-          }
-        }
+      function resetForms() {
+          document.getElementById('iloc').value = '';
+          document.getElementById('ibeds').value = '';
+          document.getElementById('ibaths').value = '';
+          document.getElementById('isqft').value = '';
+          document.getElementById('iprice').value = '';
       }
 
-
-      document.getElementById('addButton').addEventListener('click', function() {
+      function addButtonClick() {
+        
         let loc = document.getElementById('iloc').value;
         let beds = document.getElementById('ibeds').value;
         let baths = document.getElementById('ibaths').value;
@@ -103,9 +101,26 @@
           xhr2.onload = function() {
               let responseApt = JSON.parse(xhr2.responseText);
               addToTable(responseApt);
+              resetForms();
+              document.getElementById(`btnD${responseApt.id}`).focus();
+              document.getElementById("addButton").focus();
+
+              
+          }
+          
+      }
+    }
+      //populate table
+      var xhr = new XMLHttpRequest;
+      xhr.open('GET' , "http://localhost:8080/apartment-api/apartments");
+      xhr.send();
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4) {
+            for (let apt of JSON.parse(xhr.responseText)) {
+              addToTable(apt);
           }
         }
-      })
+      }
 
     </script>
     

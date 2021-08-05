@@ -26,32 +26,33 @@ public class aptServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		response.addHeader("Access-Control-Allow-Origin", "*");
-        response.setStatus(201); // "return"
         response.setContentType("application/json");
 		ArrayList<Apartment> allApt = a.retrieveAllApt();
 		String json = new ObjectMapper().writeValueAsString(allApt);
 		response.getWriter().print(json);
+		response.setStatus(200);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-        response.setStatus(201); // "return"
         response.setContentType("application/json");
 		Apartment aptNoId = new ObjectMapper().readValue(request.getReader(), Apartment.class);
 		Apartment newApt = a.createApartment(aptNoId);
 		String json = new ObjectMapper().writeValueAsString(newApt);
 		response.getWriter().print(json);
+		response.setStatus(201);
 
 	}
 
 	protected void doPut(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-        response.setStatus(201); // "return"
+        
         response.setContentType("application/json");
 		Apartment aptBefore = new ObjectMapper().readValue(request.getReader(), Apartment.class);
 		Apartment aptAfter = a.updateAptByID(aptBefore.getId(), aptBefore);
 		String json = new ObjectMapper().writeValueAsString(aptAfter);
 		response.getWriter().print(json);
+		response.setStatus(201);
 
 	}
 
@@ -59,5 +60,6 @@ public class aptServlet extends HttpServlet {
 			throws ServletException, IOException {
 		Apartment aptToDel = new ObjectMapper().readValue(request.getReader(), Apartment.class);
 		a.deleteAptByID(aptToDel.getId());
+		response.setStatus(200);
 	}
 }

@@ -123,7 +123,7 @@
       onPageLoad(); 
     }
     
-    //data for the save button
+    //data to give the save button
     var toBeUpdated;
     //modal
     var newAptModal = new bootstrap.Modal(document.getElementById('exampleModal'), { keyboard: false });
@@ -163,8 +163,9 @@
       let baths = updateBathsForm.value;
       let sqft = updateSqftForm.value;
       let price = updatePriceForm.value;
+      let vals = [beds,baths,sqft,price]
 
-      if (loc != '' && beds > 0 && baths > 0 && sqft > 0 && price > 0) { //check for valid entries
+      if (loc != '' && Math.min(vals) > 0 && Number.isInteger(beds) && Number.isInteger(baths) && Number.isInteger(sqft) && Number.isInteger(price)) { //check for valid entries
         let xhr = new XMLHttpRequest;
         xhr.open('PUT', "http://localhost:8080/apartment-api/apartments");
         let newUApt = { "location": loc, "id": toBeUpdated, "beds": beds, "baths": baths, "sqft": sqft, "price": price };
@@ -182,7 +183,7 @@
 
     }
 
-    //executed when a delete button is clicked
+
     function deleteButtonClick(sid) {
 
       let xhr = new XMLHttpRequest;
@@ -206,6 +207,7 @@
       document.getElementById(`body${newApt.id}`).innerHTML += `<td style = "width:2%;"><button class = "btn btn-danger border border-dark" id = "btnD${newApt.id}" onclick ="deleteButtonClick(${newApt.id})"> Delete </button></td>`
 
     }
+
     //resets the add forms
     function resetForms() {
 
@@ -216,7 +218,7 @@
       addPriceForm.value = '';
 
     }
-    //executed when the add button is clicked
+
     function addButtonClick() {
 
       let loc = addLocForm.value;
@@ -224,15 +226,17 @@
       let baths = addBathsForm.value;
       let sqft = addSqftForm.value;
       let price = addPriceForm.value;
-      let myApt = { "location": loc, "beds": beds, "baths": baths, "sqft": sqft, "price": price }; //to be sent in POST
-      if (loc != '' && beds > 0 && baths > 0 && price > 0) { //check for valid entry
+      let myApt = { "location": loc, "beds": beds, "baths": baths, "sqft": sqft, "price": price }; //to be sent
+      let vals = [beds,baths,sqft,price];
+      if (loc != '' && Number.isInteger(beds) && Number.isInteger(baths) && Number.isInteger(price) && Number.isInteger(sqft) && Math.min(vals) > 0) { //check for valid entry
         let xhr = new XMLHttpRequest;
         xhr.open('POST', "http://localhost:8080/apartment-api/apartments");
         xhr.send(JSON.stringify(myApt));
         xhr.onload = function () {
           let responseApt = JSON.parse(xhr.responseText); //apartment sent back
-          addToTable(responseApt); //add to the table
-          resetForms();
+          addToTable(responseApt); 
+          resetForms(); //clear add forms
+
           // scroll to bottom of table after clicking
           document.getElementById(`btnD${responseApt.id}`).focus();
           document.getElementById("addButton").focus();

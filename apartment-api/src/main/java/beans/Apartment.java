@@ -1,5 +1,7 @@
 package beans;
 
+import java.util.Objects;
+
 public class Apartment {
 	private String location;
 	private int id;
@@ -90,6 +92,26 @@ public class Apartment {
 	public String toString() {
 		return "Apartment [location=" + location + ", id=" + id + ", sqft=" + sqft + ", beds=" + beds + ", baths="
 				+ baths + ", price=" + price + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(baths, beds, id, location, price, sqft);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Apartment other = (Apartment) obj;
+		return baths == other.baths && beds == other.beds && id == other.id && Objects.equals(location, other.location)
+				&& price == other.price && sqft == other.sqft;
 	};
+	
+	
 
 }

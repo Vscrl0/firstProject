@@ -9,6 +9,7 @@ public class ApartmentDAO {
 	private static final String url = "jdbc:mysql://localhost:3306/apartment_rental";
 	private static final String user = "root";
 	private static final String pass = "root";
+	private static String table = "apartments";
 	// load the driver
 	static {
 		try {
@@ -16,6 +17,9 @@ public class ApartmentDAO {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
+	}
+	public static void setTable(String table) {
+		ApartmentDAO.table = table;
 	}
 
 	public void aptSetPreparedStatement(PreparedStatement p, Apartment a) throws SQLException {
@@ -34,7 +38,7 @@ public class ApartmentDAO {
 	// create apt
 	public Apartment createApartment(Apartment newApt) {
 		try (Connection conn = DriverManager.getConnection(url, user, pass)) {
-			String sql = "INSERT INTO apartments(location,sqft,beds,baths,price) VALUES(?,?,?,?,?)";
+			String sql = "INSERT INTO "+table+"(location,sqft,beds,baths,price) VALUES(?,?,?,?,?)";
 			PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			aptSetPreparedStatement(stmt, newApt);
 			stmt.executeUpdate();
@@ -52,7 +56,7 @@ public class ApartmentDAO {
 	// update apartment by id
 	public Apartment updateAptByID(int id, Apartment apt) {
 		try (Connection conn = DriverManager.getConnection(url, user, pass)) {
-			String sql = "UPDATE apartments SET location = ?, sqft = ?, beds = ?, baths = ?, price = ? WHERE apartment_id = ?";
+			String sql = "UPDATE "+table+" SET location = ?, sqft = ?, beds = ?, baths = ?, price = ? WHERE apartment_id = ?";
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			aptSetPreparedStatement(stmt, apt);
 			stmt.setInt(6, apt.getId());
@@ -69,7 +73,7 @@ public class ApartmentDAO {
 	public boolean deleteAptByID(int id) {
 
 		try (Connection conn = DriverManager.getConnection(url, user, pass)) {
-			String sql = "DELETE FROM apartments WHERE apartment_id = ?";
+			String sql = "DELETE FROM "+table+" WHERE apartment_id = ?";
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, id);
 			return stmt.executeUpdate() == 1;
@@ -83,7 +87,7 @@ public class ApartmentDAO {
 	public Apartment retrieveAptByID(int id) {
 		try (Connection conn = DriverManager.getConnection(url, user, pass)) {
 			String sql = "SELECT apartment_id, location, sqft, beds, baths, price "
-					+ "FROM apartments WHERE apartment_id = ?";
+					+ "FROM "+table+" WHERE apartment_id = ?";
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, id);
 			ResultSet aptRS = stmt.executeQuery();
@@ -101,7 +105,7 @@ public class ApartmentDAO {
 	public ArrayList<Apartment> retrieveAllApt() {
 
 		try (Connection conn = DriverManager.getConnection(url, user, pass)) {
-			String sql = "SELECT apartment_id, location, sqft, beds, baths, price FROM apartments";
+			String sql = "SELECT apartment_id, location, sqft, beds, baths, price FROM "+table;
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			ResultSet aptRS = stmt.executeQuery(); // ResultSet object
 			ArrayList<Apartment> aptsReturn = new ArrayList<>();

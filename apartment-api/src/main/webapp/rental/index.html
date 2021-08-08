@@ -119,9 +119,9 @@
   <!-- JS -->
   <script>
     //populates the table
-    window.onload = function() {
-      onPageLoad(); 
-    }
+    window.addEventListener('DOMContentLoaded', function() {
+      tablePop(); 
+    });
     
     //data to give the save button
     var toBeUpdated;
@@ -142,8 +142,8 @@
     const addSqftForm = document.getElementById('isqft');
     const addPriceForm = document.getElementById('iprice');
 
-    //checks if a form entry is valid for everything except location
-    function isValidFormEntry (val) {
+    //checks if an entry is valid for everything except location
+    function isValidEntry (val) {
       return (Number.isInteger(parseFloat(val)) && val >0)
     }
 
@@ -166,9 +166,8 @@
       let baths = updateBathsForm.value;
       let sqft = updateSqftForm.value;
       let price = updatePriceForm.value;
-      let vals = [beds,baths,sqft,price]
 
-      if (loc != '' && isValidFormEntry(beds) && isValidFormEntry(baths) && isValidFormEntry(sqft) && isValidFormEntry(price)) { //check for valid entries
+      if (loc != '' && isValidEntry(beds) && isValidEntry(baths) && isValidEntry(sqft) && isValidEntry(price)) { //check for valid entries
         let xhr = new XMLHttpRequest;
         xhr.open('PUT', "http://localhost:8080/apartment-api/apartments");
         let newUApt = { "location": loc, "id": toBeUpdated, "beds": beds, "baths": baths, "sqft": sqft, "price": price };
@@ -230,8 +229,7 @@
       let sqft = addSqftForm.value;
       let price = addPriceForm.value;
       let myApt = { "location": loc, "beds": beds, "baths": baths, "sqft": sqft, "price": price }; //to be sent
-      let vals = [beds,baths,sqft,price];
-      if (loc != '' && isValidFormEntry(beds) && isValidFormEntry(baths) && isValidFormEntry(sqft) && isValidFormEntry(price)) { //check for valid entry
+      if (loc != '' && isValidEntry(beds) && isValidEntry(baths) && isValidEntry(sqft) && isValidEntry(price)) { //check for valid entry
 
         let xhr = new XMLHttpRequest;
         xhr.open('POST', "http://localhost:8080/apartment-api/apartments");
@@ -254,7 +252,7 @@
       }
     }
     //populate table
-    function onPageLoad() {
+    function tablePop() {
 
       let xhr = new XMLHttpRequest;
       xhr.open('GET', "http://localhost:8080/apartment-api/apartments"); 

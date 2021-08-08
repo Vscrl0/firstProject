@@ -82,7 +82,7 @@ public class Apartment {
 		this.baths = baths;
 		this.price = price;
 	}
-	//constructor for immediate deletion
+	//id constructor
 	public Apartment(int id) {
 		super();
 		this.id = id;
